@@ -1,117 +1,152 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  KeyboardAwareScrollView,
+  KeyboardProvider,
+} from 'react-native-keyboard-controller';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+type FormSchema = {
+  username: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  addressOne: string;
+  addressTwo: string;
+  phoneNumber: string;
+  promoCode: string;
+  message: string;
+  comment: string;
+};
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+type FormKey = keyof FormSchema;
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [form, setForm] = useState<FormSchema>({
+    username: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    addressOne: '',
+    addressTwo: '',
+    phoneNumber: '',
+    promoCode: '',
+    message: '',
+    comment: '',
+  });
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const changeFormChange = (key: FormKey, value: string) => {
+    setForm(prev => ({...prev, [key]: value}));
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <KeyboardProvider>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView
+          bottomOffset={50}
+          style={styles.container}
+          contentContainerStyle={styles.content}>
+          <Text style={styles.heading}>Keyboard Aware ScrollView</Text>
+          <TextInput
+            style={styles.input}
+            value={form.username}
+            placeholder="Username"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Username`}
+            onChangeText={value => changeFormChange('username', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.firstname}
+            placeholder="Firstname"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Firstname`}
+            onChangeText={value => changeFormChange('firstname', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.lastname}
+            placeholder="Lastname"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Lastname`}
+            onChangeText={value => changeFormChange('lastname', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.email}
+            placeholder="Email"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Email`}
+            onChangeText={value => changeFormChange('email', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.addressOne}
+            placeholder="Address 1"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Address`}
+            onChangeText={value => changeFormChange('addressOne', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.addressTwo}
+            placeholder="Address 2"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Address`}
+            onChangeText={value => changeFormChange('addressTwo', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.phoneNumber}
+            placeholder="Phone number"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Phone`}
+            onChangeText={value => changeFormChange('phoneNumber', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.message}
+            placeholder="Message"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Message`}
+            onChangeText={value => changeFormChange('message', value)}
+          />
+          <TextInput
+            style={styles.input}
+            value={form.comment}
+            placeholder="Comment"
+            placeholderTextColor="#747474"
+            testID={`TextInput#Comment`}
+            onChangeText={value => changeFormChange('comment', value)}
+          />
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
+    </KeyboardProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  heading: {
+    fontSize: 36,
+    fontWeight: '800',
+    marginBottom: 8,
+    color: '#000',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  content: {
+    padding: 16,
+    gap: 8,
   },
-  highlight: {
-    fontWeight: '700',
+  input: {
+    height: 48,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    backgroundColor: '#fafafa',
+    borderWidth: 1,
+    borderColor: '#dddddd',
+    color: '#000',
   },
 });
 
